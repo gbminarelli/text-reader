@@ -6,15 +6,29 @@
     <script src="main.js" async></script>
   </head>
   <body>
-    <form action="" method="post">
-      <fieldset>
-        <legend>Form Legend</legend>
-        <label for="fileList">Files:</label>
-        <input type="file" id="fileList" multiple accept="text/plain">
-      </fieldset>
-    </form>
-    <div id="output">
-      <div>Number of Files:<span id="numFiles">0</span></div>
-      <div id="fileData">Files Data:</div>
-    </div>
+    <header>
+      <h1>Text File Reader</h1>
+    </header>
+    <article>
+      <header>
+        <h2>Form</h2>
+      </header>
+      <form action="" method="post">
+        <fieldset>
+          <legend>Form Legend</legend>
+          <label for="fileList">Files:</label>
+          <input type="file" id="fileList" multiple accept="text/plain">
+        </fieldset>
+      </form>
+    </article>
+    <article id="output">
+      <header>
+        <h2>Output</h2>
+      </header>
+      <section><p>Number of Files: <span id="numFiles">0</span><p></section>
+      <section id="fileData"></section>
+    </article>
+    <footer>
+      <p>Gianlucci Badiali Minarelli | 2017</p>
+    </footer>
   </body>
