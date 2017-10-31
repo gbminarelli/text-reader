@@ -38,7 +38,7 @@ MYAPP = {
     // TODO write better error handling code.
     if (element) {
       if (element.hasChildNodes) {
-        const textNode = document.createTextNode(` ${data}`);
+        const textNode = document.createTextNode(`${data}`);
         element.appendChild(textNode);
       } else {
         element.textContent = data;
@@ -71,10 +71,12 @@ MYAPP = {
     // TODO write better error handling code.
     const reader = new FileReader();
     reader.onload = (event) => {
-      const rawText = event.target.result, textLines = rawText.split(/\r\n|\n/); //CRLF or LF
-      textLines.map((line) => {
-        MYAPP.fileOutput({data : line, parentElement});
-      });
+      const rawText = event.target.result;
+      MYAPP.fileOutput({data: rawText, parentElement});
+      // const textLines = rawText.split(/\r\n|\n/); //CRLF or LF
+      // textLines.map((line) => {
+      //   MYAPP.fileOutput({data : line, parentElement});
+      // });
     };
     reader.onerror = (event) => {
       alert(event.target.error.name);
@@ -84,7 +86,7 @@ MYAPP = {
 
   fileOutput ({data = "", parentElement = null} = {}) {
     // TODO write error handling code.
-    const newParentElement = document.createElement("p");
+    const newParentElement = document.createElement("pre");
     parentElement.appendChild(newParentElement);
     // check for links in the text before the output.
     MYAPP.linkTest({data, parentElement : newParentElement});
@@ -93,17 +95,14 @@ MYAPP = {
   linkTest ({data = "", parentElement = null} = {}) {
     // TODO write better error handling code.
     // TODO improve linkRegex.
-    const lineStrings = data.split(/\s/), linkRegex = /^https?:\/\/[^\s]+/;
-    lineStrings.map((lineString) => {
-      if (linkRegex.test(lineString)) {
-        const element = document.createElement("a");
-        parentElement.appendChild(element);
-        element.setAttribute("href", lineString);
-        MYAPP.textOutput({data : lineString, element});
-      } else {
-        MYAPP.textOutput({data : lineString, element : parentElement});
-      }
+    // TODO update the test. Not functional atm.
+    const linkRegex = /https?:\/\/[^\s]+/g, newData = data.replace(linkRegex, (match) => {
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", match);
+      linkElement.innerHTML = match;
+      return linkElement.outerHTML;
     });
+    MYAPP.textOutput({data : newData, element : parentElement});
   }
 }
 
