@@ -16,7 +16,7 @@ MYAPP = {
       numFiles : document.getElementById("numFiles"),
       fileData : document.getElementById("fileData")
     }
-    // Clear parents
+    // Clear parents from previous outputs
     MYAPP.clearOutputs(parentElements);
     // Output number of files
     parentElements.numFiles.appendChild(document.createTextNode(`${fileList.files.length}`));
@@ -28,7 +28,7 @@ MYAPP = {
       // Append data
       reader.onload = (event) => {
         const rawText = event.target.result;
-        parentElement.appendChild(MYAPP.textOutput(rawText));
+        parentElement.appendChild(MYAPP.appendData("pre", rawText));
       };
       reader.onerror = (event) => {
         alert(event.target.error.name);
@@ -47,14 +47,22 @@ MYAPP = {
   },
 
   fileMetadataOutput ({name, size, type}) {
-    // TODO update the way metadata (name, size and type) is being displayed
-    const metadataString = JSON.stringify({name, size, type});
-    return MYAPP.textOutput(metadataString);
+    const nameElement = MYAPP.appendData("h3", name);
+    const sizeElement = MYAPP.appendData("p", `File size : ${size}`);
+    const typeElement = MYAPP.appendData("p", `File type : ${type}`);
+    return MYAPP.appendData("header", nameElement, sizeElement, typeElement);
   },
 
-  textOutput (text) {
-    const newParentElement = document.createElement("pre");
-    newParentElement.appendChild(document.createTextNode(`${text}`));
+  appendData (parentElementTag, ...dataArray) {
+    const newParentElement = document.createElement(`${parentElementTag}`);
+    for (data of dataArray) {
+      // Check if data is an Element by cheking the tagName property value
+      if (data.tagName) {
+        newParentElement.appendChild(data);
+      } else {
+        newParentElement.appendChild(document.createTextNode(`${data}`));
+      }
+    }
     return newParentElement;
   }
 }
